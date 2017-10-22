@@ -17,7 +17,7 @@ public class GetCreditScoreService {
 
     private final static String QUEUE_NAME = "credit_score_queue";
 
-    public static void main(String[] argv) throws Exception {
+    public void processMessage(String message) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         Connection connection = factory.newConnection();
@@ -26,8 +26,7 @@ public class GetCreditScoreService {
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
         //JSONify the loan request and then add the credit score to it
 
-        LoanRequest loan_request = new LoanRequest("123456-6543", 1234567.00, "6");
-        String loan_request_Json = loan_request.toJSON();
+        String loan_request_Json = message;
         System.out.println("Loan request in JSON format before it was enriched: " + loan_request_Json);
 
         JsonParser parser = new JsonParser();
